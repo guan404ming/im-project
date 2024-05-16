@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import useInfer from "@/hooks/use-infer";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import useInfer from "../hooks/use-infer";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
