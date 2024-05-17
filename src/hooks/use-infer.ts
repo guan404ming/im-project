@@ -1,6 +1,4 @@
-const URL = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`
-  : "http://localhost:3000/api";
+const URL = "http://127.0.0.1:5328/api";
 
 export default function useInfer() {
   async function getResult(image: File) {

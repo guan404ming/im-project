@@ -1,2 +1,4 @@
 Flask==2.3.2
-inference==0.10.0
+Flask-Cors==3.0.10
+python-dotenv==1.0.1
+inference_sdk==0.10.0

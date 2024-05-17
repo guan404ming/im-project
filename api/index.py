@@ -1,13 +1,23 @@
 from flask import Flask, request, jsonify
-from inference import get_model
-import cv2
+from flask_cors import CORS
+
+from inference_sdk import InferenceHTTPClient
 import numpy as np
+import cv2
 import supervision as sv
-import base64
-from io import BytesIO
 from PIL import Image
 
+import base64
+from io import BytesIO
+import os
+from dotenv import load_dotenv
+
 app = Flask(__name__)
+CORS(app)
+
+# get the API_KEY from the .env file
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 @app.route('/api/infer', methods=['POST'])
 def infer():
@@ -22,14 +32,18 @@ def infer():
     file_bytes = np.frombuffer(file.read(), np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
-    # Load a pre-trained yolov8n model
-    model = get_model(model_id="deepfashion2-m-10k/2")
+    # initialize the client
+    CLIENT = InferenceHTTPClient(
+        api_url="https://detect.roboflow.com",
+        api_key=API_KEY
+    )
 
-    # Run inference on the image
-    results = model.infer(image)[0]
+    # infer on a local image
+    results = CLIENT.infer(image, model_id="deepfashion2-m-10k/2")
+
 
     # Load the results into the supervision Detections API
-    detections = sv.Detections.from_inference(results.dict(by_alias=True, exclude_none=True))
+    detections = sv.Detections.from_inference(results)
 
     # Extract clean clothing regions and return the result
     clean_clothing_images = []
