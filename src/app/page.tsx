@@ -6,48 +6,68 @@ import useInfer from "../hooks/use-infer";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
 
 export default function Home() {
-  const inputRef = useRef<HTMLInputElement>(null);
   const { getResult } = useInfer();
   const [images, setImages] = useState<any[]>([]);
+  const [inputImage, setInputImage] = useState<File | null>(null);
 
   return (
-    <div className="flex-col flex text-center space-y-4 p-8">
-      <h1 className="text-3xl font-bold">✨ im-project ✨</h1>
-      <Input type="file" placeholder="upload some pic" ref={inputRef}></Input>
-      <Button
-        onClick={async () => {
-          if (!inputRef.current?.files?.[0]) return;
-          const res = await getResult(inputRef.current?.files?.[0] as File);
-          setImages(res.clean_clothing_images)
-        }}
-      >
-        Submit
-      </Button>
-      <div className="grid grid-cols-2 gap-2">
-        {
-          inputRef.current?.files?.[0] && (
-            <Card>
-              <Image
-                src={URL.createObjectURL(inputRef.current?.files?.[0])}
-                alt="upload pic"
-                width={200}
-                height={200}
-              />
-            </Card>
-          )
-        }
+    <main className="flex justify-center items-start px-12 space-x-4">
+      <Card className="p-4 space-y-2 h-full">
+        <Input
+          type="file"
+          placeholder="upload some pic"
+          onChange={(e) => {
+            setInputImage(e.target.files?.[0] as File);
+          }}
+        />
+        <Button
+          className="w-full"
+          onClick={async () => {
+            if (!inputImage) return;
+            const res = await getResult(inputImage);
+            setImages(res.clean_clothing_images);
+          }}
+        >
+          Submit
+        </Button>
+        {inputImage && (
+          <div className="flex justify-center items-center">
+            <Image
+              src={URL.createObjectURL(inputImage)}
+              alt="upload pic"
+              width={200}
+              height={200}
+            />
+          </div>
+        )}
+      </Card>
+
+      <Card className="grid grid-cols-2 gap-2 min-h-96 w-full p-8">
         {images.map((image, index) => (
-          <Image
+          <div
+            className="flex flex-col justify-center items-center p-6 space-y-4 border rounded-lg"
             key={index}
-            src={`data:image/png;base64,${image}`}
-            alt={`clean clothing ${index}`}
-            width={200}
-            height={200}
-          />
+          >
+            <Image
+              key={index}
+              src={`data:image/png;base64,${image.image}`}
+              alt={`clean clothing ${index}`}
+              width={200}
+              height={200}
+            />
+            <div className="flex space-x-2">
+              {image.attributes.map((attribute: string, index: number) => (
+                <Badge key={index} variant={"outline"} className="text-sm">
+                  {attribute}
+                </Badge>
+              ))}
+            </div>
+          </div>
         ))}
-      </div>
-    </div>
+      </Card>
+    </main>
   );
 }
