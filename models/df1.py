@@ -20,7 +20,7 @@ class DF1_Model:
         if eval_mode:
             print(self.model)
 
-    def predict(self, img, threshold=0.1):
+    def infer(self, img, threshold=0.1):
         device = torch.device("cpu")
         # img = Image.open(image_path).convert("RGB")
 

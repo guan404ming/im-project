@@ -28,7 +28,7 @@ export default function Home() {
           onClick={async () => {
             if (!inputImage) return;
             const res = await getResult(inputImage);
-            setImages(res.clean_clothing_images);
+            setImages(res.body);
           }}
         >
           Submit
