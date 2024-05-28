@@ -12,12 +12,16 @@ from io import BytesIO
 import os
 from dotenv import load_dotenv
 
+from model.main import Model
+
 app = Flask(__name__)
 CORS(app)
 
 # get the API_KEY from the .env file
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
+
+df1_model = Model()
 
 @app.route('/api/infer', methods=['POST'])
 def infer():
@@ -49,7 +53,10 @@ def infer():
     clean_clothing_images = []
     for i, mask in enumerate(detections.mask):
         clean_clothing_region = extract_clean_clothing_with_mask(image, mask)
-        clean_clothing_images.append(encode_image_to_base64(clean_clothing_region))
+        clean_clothing_images.append({
+            'image': encode_image_to_base64(clean_clothing_region),
+            'attributes': df1_model.infer(Image.fromarray(cv2.cvtColor(clean_clothing_region, cv2.COLOR_BGR2RGB)))
+        })
 
     return jsonify({'clean_clothing_images': clean_clothing_images})
 
