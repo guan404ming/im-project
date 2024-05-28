@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 import base64
 from io import BytesIO
 
-from models.df1 import DF1_Model
-from models.df2 import DF2_Model
+from models.df1 import DeepFashion1Model
+from models.df2 import DeepFashion2Model
 
 app = Flask(__name__)
 CORS(app)
@@ -20,8 +20,8 @@ CORS(app)
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
-df1_model = DF1_Model()
-df2_model = DF2_Model()
+df1_model = DeepFashion1Model()
+df2_model = DeepFashion2Model()
 
 
 @app.route("/api/infer", methods=["POST"])

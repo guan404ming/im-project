@@ -6,7 +6,7 @@ from torch.autograd import Variable
 MODEL_PATH = "models/lib/df1.pkl"
 CLASSES_PATH = "models/lib/attribute-classes.txt"
 
-class DF1_Model:
+class DeepFashion1Model:
     def __init__(self):
         self.model = None
         self.labels = []

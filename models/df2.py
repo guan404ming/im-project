@@ -5,7 +5,7 @@ import supervision as sv
 from PIL import Image
 import cv2
 
-class DF2_Model:
+class DeepFashion2Model:
     def __init__(self):
         load_dotenv()
         self.model = InferenceHTTPClient(
