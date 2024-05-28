@@ -14,8 +14,8 @@ export default function Home() {
   const [inputImage, setInputImage] = useState<File | null>(null);
 
   return (
-    <main className="flex justify-center items-start px-12 space-x-4">
-      <Card className="p-4 space-y-2 h-full">
+    <main className="flex justify-center items-start px-12 pb-12 space-x-4">
+      <Card className="p-4 space-y-2 h-96">
         <Input
           type="file"
           placeholder="upload some pic"

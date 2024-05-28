@@ -1,16 +1,16 @@
 import torch
 from torchvision import transforms
 from torch.autograd import Variable
-from PIL import Image
 
 # Define the model
-MODEL_PATH = "model/lib/df1.pkl"
-CLASSES_PATH = "model/lib/attribute-classes.txt"
+MODEL_PATH = "models/lib/df1.pkl"
+CLASSES_PATH = "models/lib/attribute-classes.txt"
 
-class AttributePredictionModel:
+class DF1_Model:
     def __init__(self):
         self.model = None
         self.labels = []
+        self.load(MODEL_PATH, CLASSES_PATH)
 
     def load(self, model_path, labels_path, eval_mode=False):
         self.model = torch.load(model_path)
@@ -56,14 +56,3 @@ class AttributePredictionModel:
             self.labels[i] for i in range(len(predictions)) if predictions[i] == 1
         ]
         return predicted_attributes
-
-
-class Model:
-    def __init__(self):
-        self.model = AttributePredictionModel()
-        self.model.load(MODEL_PATH, CLASSES_PATH)
-
-    def infer(self, image_path):
-        predictions = self.model.predict(image_path)
-        print(f"Predicted attributes: {predictions}")
-        return predictions
