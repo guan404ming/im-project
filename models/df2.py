@@ -15,7 +15,6 @@ class DeepFashion2Model:
     def infer(self, image):
         results = self.model.infer(image, model_id="deepfashion2-m-10k/2")
         detections = sv.Detections.from_inference(results)
-        print(detections)
 
         def extract_clean_clothing_with_mask(image, mask):
             mask = mask.astype('uint8') * 255
@@ -26,6 +25,9 @@ class DeepFashion2Model:
         clean_clothing_images = []
         for i, mask in enumerate(detections.mask):
             clean_clothing_region = extract_clean_clothing_with_mask(image, mask)
-            clean_clothing_images.append(clean_clothing_region)
+            clean_clothing_images.append({
+                "clean_clothing_region": clean_clothing_region,
+                "classes": detections.data["class_name"][i],
+            })
         
         return clean_clothing_images

@@ -46,8 +46,14 @@ def infer():
     for clean_clothing_image in clean_clothing_images:
         response.append(
             {
-                "image": encode_image_to_base64(clean_clothing_image),
-                "attributes": df1_model.infer(clean_clothing_image),
+                "image": encode_image_to_base64(
+                    clean_clothing_image["clean_clothing_region"]
+                ),
+                "class": clean_clothing_image["classes"],
+                "attributes": df1_model.infer(
+                    clean_clothing_image["clean_clothing_region"],
+                    0.13
+                ),
             }
         )
 

@@ -51,6 +51,7 @@ export default function Home() {
             className="flex flex-col justify-center items-center p-6 space-y-4 border rounded-lg"
             key={index}
           >
+            <h1 className=" font-semibold">{image.class}</h1>
             <Image
               key={index}
               src={`data:image/png;base64,${image.image}`}
